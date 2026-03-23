@@ -1,0 +1,42 @@
+<!DOCTYPE html><html><head>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 40px auto; padding: 20px; background: #f0f2f5; }
+        h1 { color: #2c3e50; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        h2 { color: #34495e; margin-top: 30px; }
+        code { background-color: #fff; padding: 2px 5px; border-radius: 4px; font-family: 'Consolas', monospace; border: 1px solid #eaeaea; }
+        img { max-width: 100%; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin: 20px 0; }
+        ul { margin-bottom: 20px; }
+        li { margin-bottom: 8px; }
+        .page { background: white; padding: 40px; box-shadow: 0 0 10px rgba(0,0,0,0.1); border-radius: 8px; }
+        @media print {
+            body { margin: 0; background: white; }
+            .page { box-shadow: none; padding: 0; border-radius: 0; }
+        }
+    </style>
+    </head><body><div class='page'><h1>Oracle EPM Power BI Connector - Architecture Overview</h1>
+<p>This document outlines the dual-architecture approach of the EPM Power BI Connector product. We offer two distinct integration routes, allowing administrators to choose the balance between <strong>Rapid Extensibility (Python)</strong> and <strong>Native Security (M-Query)</strong>.</p>
+<h2>1. The Python Template Route (Hybrid Engine)</h2>
+<p><strong>File:</strong> <code>power_query_engine.m</code> (Python Injected)</p>
+<p>This architecture uses Power BI as a frontend to capture User Parameters and dynamically injects them into a highly secure, Base64 obfuscated Python script. Power BI then executes this Python script locally to fetch and transform data.</p>
+<p><strong>Pros:</strong>
+* <strong>Cryptographic Trial Licensing:</strong> Because it runs Python, we can implement an uncrackable SHA-256 HMAC cryptographic 180-day trial clock that forces users back to the administrator for a key.
+* <strong>Complex Data Transformation:</strong> <code>pandas</code> easily flattens severely nested JSON hierarchies that EPM produces.
+* <strong>Rapid Updates:</strong> Administrators can regenerate the core engine completely independently.</p>
+<p><strong>Cons:</strong>
+* <strong>Credentials:</strong> Power BI Parameters cannot mask "Password" fields, making them visible during the one-time template setup.
+* <strong>Dependency:</strong> Requires the end-user to have Python installed on their machine with <code>pandas</code> and <code>requests</code>.</p>
+<hr />
+<h2>2. The Pure M-Query Route (Microsoft Native Engine)</h2>
+<p><strong>File:</strong> <code>pure_m_query_engine.m</code></p>
+<p>This architecture discards Python entirely. The API payload, authentication, and JSON-to-Table transformations are coded 100% in Microsoft's proprietary <code>M</code> language using the <code>Web.Contents</code> function.</p>
+<p><strong>Pros:</strong>
+* <strong>Native Security Integration:</strong> Bypasses Power BI Parameters for credentials. It securely triggers Microsoft's built-in "Data Source Credentials" popup, perfectly masking passwords as <code>••••••••</code> and caching the token deeply in the Windows OS Credential Manager.
+* <strong>Zero Dependencies:</strong> Does not require the user to have Python installed. It runs seamlessly on any machine that has Power BI Desktop installed, and refreshes natively in the Power BI Cloud Service without Personal Gateways.</p>
+<p><strong>Cons:</strong>
+* <strong>No Local Trial Clock:</strong> pure M-Query lacks the cryptographic libraries required to enforce an offline, uncrackable 180-day trial without complex online licensing servers. 
+* <strong>Complex Editing:</strong> <code>M</code> language makes adapting to massive EPM hierarchy changes slightly more difficult than <code>pandas</code>.</p>
+<h2>Conclusion</h2>
+<ul>
+<li>Use the <strong>Python Route</strong> if you intend to commercially sell this script and absolutely require the Cryptographic Licensing System.</li>
+<li>Use the <strong>Pure M-Query Route</strong> if you are deploying internally to an enterprise, where native Microsoft Password credential management is the critical priority instead of licensing.</li>
+</ul></div></body></html>

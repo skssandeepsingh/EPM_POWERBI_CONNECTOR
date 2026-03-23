@@ -1,0 +1,44 @@
+<!DOCTYPE html><html><head>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 40px auto; padding: 20px; background: #f0f2f5; }
+        h1 { color: #2c3e50; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        h2 { color: #34495e; margin-top: 30px; }
+        code { background-color: #fff; padding: 2px 5px; border-radius: 4px; font-family: 'Consolas', monospace; border: 1px solid #eaeaea; }
+        img { max-width: 100%; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin: 20px 0; }
+        ul { margin-bottom: 20px; }
+        li { margin-bottom: 8px; }
+        .page { background: white; padding: 40px; box-shadow: 0 0 10px rgba(0,0,0,0.1); border-radius: 8px; }
+        @media print {
+            body { margin: 0; background: white; }
+            .page { box-shadow: none; padding: 0; border-radius: 0; }
+        }
+    </style>
+    </head><body><div class='page'><h1>Oracle EPM Power BI Connector - Administrator Guide</h1>
+<p>This guide is for the internal champion/developer managing the deployment of the Oracle EPM Power BI Connector.</p>
+<h2>1. Choosing Your Architecture</h2>
+<p>Review <code>architecture_overview.md</code> to decide which engine to embed into your <code>.pbit</code> template.
+*   <strong>For External/Commercial Distribution:</strong> Use <code>power_query_engine.m</code> (The Python Hybrid). It enforces the uncrackable 180-day limitation.
+*   <strong>For Internal/Enterprise Distribution:</strong> Use <code>pure_m_query_engine.m</code> (The Native Microsoft Engine). It masks user typing with <code>••••••••</code> entirely securely using Power BI Data Source Credentials.</p>
+<h2>2. Generating the Golden Template (.pbit)</h2>
+<p>You must prepare the initial template that you will distribute to your users:
+1. Open Power BI Desktop.
+2. Follow the steps in <code>powerbi_template_guide.md</code> to create the UI Parameters and paste your chosen <code>M-Query</code> text.
+3. Save the result as <code>EPM_Connector_Master.pbit</code>.</p>
+<h2>3. Managing Cryptographic Trial Licenses (Python Route Only)</h2>
+<p>If you chose the Python Hybrid architecture, your <code>.pbit</code> file has a hardcoded, unchangeable countdown clock (180 days from the moment you compile it). </p>
+<p>If a user complains that their dashboard stopped refreshing:</p>
+<p><img alt="EPM License Administrator" src="file:///C:/Users/Sandeep%20Singh/.gemini/antigravity/brain/fa69a55a-a3b5-47d4-861c-4649c6c35ab3/license_admin_gui_1774220028377.png" /></p>
+<ol>
+<li>Open <code>license_administrator_gui.exe</code> (Keep this file strictly on your personal machine).</li>
+<li>Enter the user's name (e.g., "John_Marketing").</li>
+<li>Set the duration extension (e.g., another <code>180</code> days).</li>
+<li>Click <strong>Generate Cryptographic License</strong>.</li>
+<li>Copy the Base64 key that appears.</li>
+<li>Email this exact key to the user.</li>
+</ol>
+<p><em>(Note: They do not need a new <code>.pbit</code> file. They simply paste that key into their existing Power BI <code>LICENSE_KEY</code> Parameter).</em></p>
+<h2>4. Troubleshooting</h2>
+<p><strong>"Connection Error 401"</strong>
+The user inputted the wrong EPM credentials. Tell them to double check their URL and Network connectivity.</p>
+<p><strong>"Expression.Error: We cannot convert null to Text"</strong>
+This happens if the user leaves a parameter completely blank during <code>.pbit</code> setup in older Power BI versions. Ensure they type <em>something</em> (even just a space) or tell them to update Power BI Desktop. We have applied <code>if UserVar = null then ""</code> fixes internally to mitigate this.</p></div></body></html>

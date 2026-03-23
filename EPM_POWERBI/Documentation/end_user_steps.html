@@ -1,0 +1,50 @@
+<!DOCTYPE html><html><head>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 40px auto; padding: 20px; background: #f0f2f5; }
+        h1 { color: #2c3e50; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        h2 { color: #34495e; margin-top: 30px; }
+        code { background-color: #fff; padding: 2px 5px; border-radius: 4px; font-family: 'Consolas', monospace; border: 1px solid #eaeaea; }
+        img { max-width: 100%; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin: 20px 0; }
+        ul { margin-bottom: 20px; }
+        li { margin-bottom: 8px; }
+        .page { background: white; padding: 40px; box-shadow: 0 0 10px rgba(0,0,0,0.1); border-radius: 8px; }
+        @media print {
+            body { margin: 0; background: white; }
+            .page { box-shadow: none; padding: 0; border-radius: 0; }
+        }
+    </style>
+    </head><body><div class='page'><h1>Oracle EPM Power BI Connector - End User Quick Start</h1>
+<p>Welcome to the Oracle EPM Power BI Connector! This tool allows you to automatically pull your Oracle Cloud EPM slices directly into Power BI instantly seamlessly.</p>
+<h2>1. Setup Your Dashboard</h2>
+<p>You should have received an <code>EPM_Connector.pbit</code> file from your Administrator.</p>
+<ol>
+<li><strong>Double-Click</strong> the <code>EPM_Connector.pbit</code> file to open it in Power BI Desktop.</li>
+<li>A native popup window will appear asking for exact parameters:</li>
+</ol>
+<p><img alt="Power BI Parameter Prompt" src="file:///C:/Users/Sandeep%20Singh/.gemini/antigravity/brain/fa69a55a-a3b5-47d4-861c-4649c6c35ab3/pbi_parameter_popup_1774220001368.png" /></p>
+<pre><code>*   **APP_NAME:** The target Oracle Planning Application name (e.g., `OEP_FS`).
+*   **CUBE_NAME:** The target plan type (e.g., `OEP_FIN`).
+*   **POV_DIMENSIONS / POV_MEMBERS:** Ask your Admin what slices to pull if you are unsure.
+*   **LICENSE_KEY:** Leave this completely blank unless your Administrator specifically gave you a key.
+</code></pre>
+<ol>
+<li>Click <strong>Load</strong>.</li>
+</ol>
+<h2>2. Authenticating (Pure M-Query Version Only)</h2>
+<p>If your administrator chose the Native Microsoft architecture:
+1. Power BI will instantly prompt you with a <strong>"Web Credentials"</strong> or <strong>"Data Source Credentials"</strong> dialog.</p>
+<p><img alt="Power BI Basic Data Source Credentials" src="file:///C:/Users/Sandeep%20Singh/.gemini/antigravity/brain/fa69a55a-a3b5-47d4-861c-4649c6c35ab3/pbi_credentials_ui_1774220014123.png" /></p>
+<ol>
+<li>Select <strong>Basic</strong>.</li>
+<li>Type in your standard Oracle EPM <code>Username</code> and <code>Password</code>. (Your typing will be securely masked as <code>••••••••</code>).</li>
+<li>Click <strong>Connect</strong>. 
+<em>(Power BI stores this token deeply in your Windows OS. You will never have to type your password again when refreshing).</em></li>
+</ol>
+<h2>3. License Expiration</h2>
+<p>If your dashboard suddenly stops refreshing and throws the error: 
+<code>"EPM Connector Trial has expired. Please provide a valid License Key."</code></p>
+<p>Don't panic! Your 6-month product trial has simply ended. 
+1. Contact your Administrator and request a License Extension.
+2. They will give you a long string of text (e.g., <code>MjAyNi0wOS0yMnxKd...</code>).
+3. In Power BI, go to <strong>Home -&gt; Transform Data -&gt; Edit Parameters</strong>.
+4. Paste the key verbatim into the <code>LICENSE_KEY</code> box and hit <strong>Apply Changes</strong>. Your dashboard will instantly unlock!</p></div></body></html>
